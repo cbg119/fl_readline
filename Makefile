@@ -6,19 +6,18 @@
 #    By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/17 13:41:11 by cbagdon           #+#    #+#              #
-#    Updated: 2019/04/17 13:53:24 by cbagdon          ###   ########.fr        #
+#    Updated: 2019/04/17 15:16:34 by cbagdon          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = fl_readline.a
+NAME = libfl_readline.a
 
 SRC = main.c
 
 INCLUDES = includes/ \
-			../libft/inc
+		-I ../libft/includes
 
-LFT = -L ../libft -lft \
-		-ltermcap
+LFT = -ltermcap
 
 FLAGS = -Wall -Wextra -Werror
 
@@ -28,7 +27,7 @@ all: $(NAME)
 
 $(NAME):
 	@mkdir build
-	@gcc $(FLAGS) -I $(INCLUDES) $(LFT) -c $(addprefix src/,$(SRC))
+	@gcc $(FLAGS) -I $(INCLUDES) -c $(addprefix src/,$(SRC))
 	@mv $(OBJECTS) build/
 	@ar -rcs $(NAME) $(addprefix build/,$(OBJECTS))
 
