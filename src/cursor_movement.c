@@ -1,25 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   cursor_movement.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/17 13:54:58 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/04/18 13:03:34 by cbagdon          ###   ########.fr       */
+/*   Created: 2019/04/17 16:30:19 by cbagdon           #+#    #+#             */
+/*   Updated: 2019/04/17 16:49:07 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fl_readline.h"
 
-void	fl_readline(t_line *line, char *str)
+void		fl_move_left(void)
 {
-	line->cursor = 0;
-	line->length = ft_strlen(str);
-	ft_putstr_fd(str, STDERR_FILENO);
-	fl_input_loop(line);
+	char	*move;
+	char	buf[30];
+
+	move = buf;
+	ft_printf(tgetstr("le", &move));
 }
 
+void		fl_move_right(void)
+{
+	char	*move;
+	char	buf[30];
 
-
-
+	move = buf;
+	ft_printf(tgetstr("nd", &move));
+}
