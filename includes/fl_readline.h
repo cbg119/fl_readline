@@ -6,7 +6,7 @@
 /*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/17 13:54:47 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/04/21 11:06:13 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/04/21 11:14:15 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 # define DELETE 0x7F
 # define DELETE2 0x7E335B1B
 # define CMD_MAX 4096
+# define IS_BACKSPACE(c) ((c == DELETE || c == DELETE2) ? 1 : 0)
 
 /*
 **	STRUCTS
