@@ -6,13 +6,16 @@
 #    By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/17 13:41:11 by cbagdon           #+#    #+#              #
-#    Updated: 2019/04/17 15:16:34 by cbagdon          ###   ########.fr        #
+#    Updated: 2019/04/17 16:35:29 by cbagdon          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libfl_readline.a
 
-SRC = main.c
+SRC = main.c \
+		term.c \
+		input.c \
+		cursor_movement.c
 
 INCLUDES = includes/ \
 		-I ../libft/includes
