@@ -1,27 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/17 13:54:58 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/04/21 11:05:48 by cbagdon          ###   ########.fr       */
+/*   Created: 2019/04/21 11:01:29 by cbagdon           #+#    #+#             */
+/*   Updated: 2019/04/21 11:05:25 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fl_readline.h"
 
-void	fl_readline(t_line *line, char *str)
+void		handle_resize(int signo)
 {
-	line->cursor = 0;
-	line->length = 0;
-	line->prompt_length = ft_strlen(str);
-	ft_putstr_fd(str, STDERR_FILENO);
-	signal(SIGWINCH, handle_resize);
-	fl_input_loop(line);
+	(void)signo;
+	ioctl(STDIN_FILENO, TIOCGWINSZ, &g_window);
+	fl_get_cursorpos();
 }
-
-
-
-

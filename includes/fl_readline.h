@@ -6,7 +6,7 @@
 /*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/17 13:54:47 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/04/18 13:33:54 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/04/21 11:06:13 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,12 @@
 **	STRUCTS
 */
 
+typedef struct			s_cursor
+{
+	int					col;
+	int					row;
+}						t_cursor;
+
 typedef struct			s_terms
 {
 	struct termios		old_terminal;
@@ -45,18 +51,34 @@ typedef struct			s_line
 {
 	int					length;
 	int					cursor;
+	int					prompt_length;
 	char				cmd[CMD_MAX];
 	t_terms				terminals;
-	struct winsize		window;
+	t_cursor			*cursor_pos;
+	struct winsize		*window;
 }						t_line;
+
+/*
+**	GLOBAL
+*/
+
+struct winsize			g_window;
+t_cursor				g_cursor;
+
+/*
+**	SIGNALS
+*/
+
+void					handle_resize(int signo);
 
 /*
 **	CURSOR MOVEMENT
 */
 
 void					fl_input_loop(t_line *line);
-void					fl_move_left(void);
-void					fl_move_right(void);
+void					fl_move_left(t_line *line);
+void					fl_move_right(t_line *line);
+void					fl_get_cursorpos(void);
 
 /*
 **	TERM SETUP
