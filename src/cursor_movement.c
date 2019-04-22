@@ -6,7 +6,7 @@
 /*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/17 16:30:19 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/04/21 11:07:00 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/04/22 16:40:27 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,19 @@ void		fl_get_cursorpos(void)
 	g_cursor.col = ft_atoi(pos + i + 1);
 }
 
+void		fl_force_cursor_update(t_line *line)
+{
+
+}
+
 void		fl_move_left(t_line *line)
 {
-	line->cursor--;
-	ft_putstr(tgetstr("le", NULL));
+	if (line->cursor_pos->col > 1)
+		ft_putstr(tgetstr("le", NULL));
+	else
+		ft_putstr(tgoto(tgetstr("cm", NULL), line->window->ws_col - 1, line->cursor_pos->row - 2));
 	fl_get_cursorpos();
+	line->cursor--;
 }
 
 void		fl_move_right(t_line *line)

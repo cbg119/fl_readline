@@ -6,7 +6,7 @@
 /*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/17 16:07:08 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/04/21 11:06:48 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/04/22 16:31:57 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,7 @@
 
 void			fl_setup_term(t_line *line)
 {
-	char				*to_print;
-	char				buf[30];
-
 	ft_bzero(line->cmd, CMD_MAX);
-	to_print = buf;
 	ioctl(STDIN_FILENO, TIOCGWINSZ, &g_window);
 	line->window = &g_window;
 	tcgetattr(1, &line->terminals.old_terminal);
@@ -31,10 +27,6 @@ void			fl_setup_term(t_line *line)
 
 void			fl_reset_term(t_terms *terminals)
 {
-	char	*to_print;
-	char	buf[30];
-
-	to_print = buf;
 	tcsetattr(1, TCSANOW, &terminals->old_terminal);
 }
 

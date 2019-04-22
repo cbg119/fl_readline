@@ -6,11 +6,17 @@
 /*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/17 16:32:11 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/04/21 11:37:10 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/04/22 16:18:39 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fl_readline.h"
+
+/*
+**	To handle multi line deletion, just do this: move left, delete till end
+**	of screen, re print line->cmd + line->cursor, then move backt cursor to
+**	specified spot.
+*/
 
 static void		fl_delete_char(t_line *line)
 {
@@ -19,7 +25,8 @@ static void		fl_delete_char(t_line *line)
 	fl_move_left(line);
 	ft_memmove(line->cmd + line->cursor, line->cmd + line->cursor + 1,
 	CMD_MAX - line->cursor - 1);
-	ft_putstr_fd(tgetstr("dc", NULL), 0);
+	ft_putstr_fd(tgetstr("cd", NULL), 0);
+	ft_putstr_fd(line->cmd + line->cursor, 0);
 	line->length--;
 	fl_get_cursorpos();
 
@@ -48,7 +55,9 @@ void			fl_input_loop(t_line *line)
 		c = 0;
 		read(0, &c, 6);
 		if (c == LEFT && line->cursor != 0)
+		{
 			fl_move_left(line);
+		}
 		else if (c == RIGHT && line->cmd[line->cursor])
 			fl_move_right(line);
 		else if (ft_isprint(c))
