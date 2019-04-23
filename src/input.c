@@ -6,7 +6,7 @@
 /*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/17 16:32:11 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/04/22 16:18:39 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/04/23 11:07:49 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,11 @@ static void		fl_delete_char(t_line *line)
 	fl_move_left(line);
 	ft_memmove(line->cmd + line->cursor, line->cmd + line->cursor + 1,
 	CMD_MAX - line->cursor - 1);
-	ft_putstr_fd(tgetstr("cd", NULL), 0);
+	ft_putstr_fd(tgetstr("cd", NULL), 1);
 	ft_putstr_fd(line->cmd + line->cursor, 0);
 	line->length--;
+	fl_force_cursor_update(line);
 	fl_get_cursorpos();
-
 }
 
 static void		fl_insert_char(t_line *line, char c)

@@ -6,7 +6,7 @@
 /*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/17 16:30:19 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/04/22 16:40:27 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/04/23 11:21:49 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ void		fl_get_cursorpos(void)
 
 void		fl_force_cursor_update(t_line *line)
 {
-
+	ft_putstr(tgoto(tgetstr("cm", NULL), line->cursor_pos->col - 1,
+	line->cursor_pos->row - 1));
 }
 
 void		fl_move_left(t_line *line)
@@ -38,14 +39,16 @@ void		fl_move_left(t_line *line)
 	if (line->cursor_pos->col > 1)
 		ft_putstr(tgetstr("le", NULL));
 	else
-		ft_putstr(tgoto(tgetstr("cm", NULL), line->window->ws_col - 1, line->cursor_pos->row - 2));
+		ft_putstr(tgoto(tgetstr("cm", NULL), line->window->ws_col - 1,
+		line->cursor_pos->row - 2));
 	fl_get_cursorpos();
 	line->cursor--;
 }
 
 void		fl_move_right(t_line *line)
 {
-	if (line->cursor_pos->col + 1 > line->window->ws_col && line->cursor + 1 < line->length)
+	if (line->cursor_pos->col + 1 > line->window->ws_col && line->cursor + 1
+	< line->length)
 	{
 		ft_putstr(tgetstr("do", NULL));
 		ft_putstr(tgetstr("cr", NULL));

@@ -6,7 +6,7 @@
 /*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/17 13:54:47 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/04/22 16:30:43 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/04/23 11:08:10 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ void					fl_input_loop(t_line *line);
 void					fl_move_left(t_line *line);
 void					fl_move_right(t_line *line);
 void					fl_get_cursorpos(void);
+void					fl_force_cursor_update(t_line *line);
 
 /*
 **	TERM SETUP
