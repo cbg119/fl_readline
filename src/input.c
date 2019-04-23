@@ -6,7 +6,7 @@
 /*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/17 16:32:11 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/04/23 11:34:54 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/04/23 13:20:10 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static void		fl_insert_char(t_line *line, char c)
 	ft_putchar_fd(c, 0);
 	ft_putstr_fd(tgetstr("ei", NULL), 0);
 	fl_get_cursorpos();
-	if (line->cursor_pos->col >= line->window->ws_col)
+	if (line->cursor_pos->col > line->window->ws_col)
 	{
 		ft_putstr(tgetstr("do", NULL));
 		ft_putstr(tgetstr("cr", NULL));

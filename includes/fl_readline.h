@@ -6,7 +6,7 @@
 /*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/17 13:54:47 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/04/23 11:08:10 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/04/23 13:11:12 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,6 @@ int						fl_term_check(void);
 void					fl_setup_term(t_line *line);
 void					fl_reset_term(t_terms *terminals);
 
-void					fl_readline(t_line *line, char *str);
+char					*fl_readline(t_line *line, char *str);
 
 #endif
