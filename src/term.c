@@ -6,7 +6,7 @@
 /*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/17 16:07:08 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/04/22 16:31:57 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/04/25 12:46:08 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void			fl_setup_term(t_line *line)
 	tcgetattr(1, &line->terminals.new_terminal);
 	line->terminals.new_terminal.c_lflag &= ~(ICANON | ECHO);
 	tcsetattr(1, TCSANOW, &line->terminals.new_terminal);
-	fl_get_cursorpos();
 	line->cursor_pos = &g_cursor;
 }
 

@@ -6,7 +6,7 @@
 /*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/17 13:54:47 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/04/23 13:11:12 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/04/25 12:59:23 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ typedef struct			s_line
 	int					prompt_length;
 	char				cmd[CMD_MAX];
 	t_terms				terminals;
-	t_cursor			*cursor_start;
+	t_cursor			cursor_start;
 	t_cursor			*cursor_pos;
 	struct winsize		*window;
 }						t_line;

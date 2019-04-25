@@ -6,16 +6,23 @@
 /*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/17 16:32:11 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/04/23 13:20:10 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/04/25 13:16:15 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fl_readline.h"
 
 /*
-**	To handle multi line deletion, just do this: move left, delete till end
-**	of screen, re print line->cmd + line->cursor, then move backt cursor to
-**	specified spot.
+**	The insert char function is ugly. I'm sorry. I've been stuck on this for
+**	days and just figured out this ugly but also working solution. papa bless.
+*/
+
+/*
+**	For clarity, the first if condition in fl_insert_char checks for when the
+**	user is editing the end of the line if the cursor has hit the end of the
+**	window yet. The second checks for when the user is editing before the
+**	end of the line, and it is checking to see if the end of the line has hit
+**	the window yet
 */
 
 static void		fl_delete_char(t_line *line)
@@ -25,7 +32,7 @@ static void		fl_delete_char(t_line *line)
 	fl_move_left(line);
 	ft_memmove(line->cmd + line->cursor, line->cmd + line->cursor + 1,
 	CMD_MAX - line->cursor - 1);
-	ft_putstr_fd(tgetstr("cd", NULL), 1);
+	ft_putstr_fd(tgetstr("ce", NULL), 1);
 	ft_putstr_fd(line->cmd + line->cursor, 0);
 	line->length--;
 	fl_force_cursor_update(line);
@@ -38,12 +45,14 @@ static void		fl_insert_char(t_line *line, char c)
 		return ;
 	ft_memmove(line->cmd + line->cursor + 1, line->cmd + line->cursor,
 	CMD_MAX - line->cursor - 1);
-	line->cmd[line->cursor++] = c;
+	line->cmd[line->cursor] = c;
 	line->length++;
+	line->cursor++;
+	line->cursor_pos->col++;
+	ft_putstr_fd(tgetstr("ce", NULL), 0);
 	ft_putstr_fd(tgetstr("im", NULL), 0);
-	ft_putchar_fd(c, 0);
+	ft_putstr_fd(line->cmd + (line->cursor - 1), 0);
 	ft_putstr_fd(tgetstr("ei", NULL), 0);
-	fl_get_cursorpos();
 	if (line->cursor_pos->col > line->window->ws_col)
 	{
 		ft_putstr(tgetstr("do", NULL));
@@ -51,6 +60,11 @@ static void		fl_insert_char(t_line *line, char c)
 		fl_get_cursorpos();
 		fl_force_cursor_update(line);
 	}
+	if (line->cursor_start.col + line->length - 1 > line->window->ws_col &&
+	line->cursor_pos->row == line->cursor_start.row)
+		line->cursor_pos->row--;
+	fl_force_cursor_update(line);
+	fl_get_cursorpos();
 }
 
 void			fl_input_loop(t_line *line)
