@@ -6,7 +6,7 @@
 /*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/17 16:32:11 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/04/25 13:16:15 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/04/27 20:22:22 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,47 +27,78 @@
 
 static void		fl_delete_char(t_line *line)
 {
-	if (!line->cursor)
+	if (line->cursor == 0)
 		return ;
 	fl_move_left(line);
-	ft_memmove(line->cmd + line->cursor, line->cmd + line->cursor + 1,
-	CMD_MAX - line->cursor - 1);
-	ft_putstr_fd(tgetstr("ce", NULL), 1);
-	ft_putstr_fd(line->cmd + line->cursor, 0);
+	ft_memmove(line->cmd + line->cursor,
+	line->cmd + line->cursor + 1, CMD_MAX - line->cursor - 1);
 	line->length--;
-	fl_force_cursor_update(line);
-	fl_get_cursorpos();
+	ft_putstr_fd(tgetstr("cd", NULL), 0);
+	ft_putstr_fd(line->cmd + line->cursor, 0);
+	fl_update_cursor(line);
 }
 
 static void		fl_insert_char(t_line *line, char c)
 {
-	if (line->length + 1 >= CMD_MAX)
-		return ;
 	ft_memmove(line->cmd + line->cursor + 1, line->cmd + line->cursor,
 	CMD_MAX - line->cursor - 1);
 	line->cmd[line->cursor] = c;
+	ft_putstr_fd(tgetstr("cd", NULL), 0);
+	ft_putstr_fd(line->cmd + line->cursor, 0);
 	line->length++;
 	line->cursor++;
-	line->cursor_pos->col++;
-	ft_putstr_fd(tgetstr("ce", NULL), 0);
-	ft_putstr_fd(tgetstr("im", NULL), 0);
-	ft_putstr_fd(line->cmd + (line->cursor - 1), 0);
-	ft_putstr_fd(tgetstr("ei", NULL), 0);
-	if (line->cursor_pos->col > line->window->ws_col)
-	{
-		ft_putstr(tgetstr("do", NULL));
-		ft_putstr(tgetstr("cr", NULL));
-		fl_get_cursorpos();
-		fl_force_cursor_update(line);
-	}
-	if (line->cursor_start.col + line->length - 1 > line->window->ws_col &&
-	line->cursor_pos->row == line->cursor_start.row)
-		line->cursor_pos->row--;
-	fl_force_cursor_update(line);
-	fl_get_cursorpos();
+	fl_update_cursor(line);
 }
 
-void			fl_input_loop(t_line *line)
+static void		fl_up_history(t_line *line, t_h_list *history)
+{
+	if (history->entries == 0 ||
+	(history->location > 0  && history->head->next == NULL))
+		return ;
+	line->cursor = 0;
+	fl_update_cursor(line);
+	ft_putstr_fd(tgetstr("cd", NULL), 0);
+	if (history->location == 0)
+	{
+		ft_bzero(line->cmd, line->length);
+		ft_strcpy(line->cmd, history->head->line);
+	}
+	else
+	{
+		ft_bzero(line->cmd, CMD_MAX);
+		history->head = history->head->next;
+		ft_strcpy(line->cmd, history->head->line);
+	}
+	history->location++;
+	line->length = ft_strlen(line->cmd);
+	ft_putstr_fd(line->cmd, 0);
+	fl_update_cursor(line);
+}
+
+static void		fl_down_history(t_line *line, t_h_list *history)
+{
+	if (history->entries == 0 || history->location == 0)
+		return ;
+	line->cursor = 0;
+	fl_update_cursor(line);
+	ft_putstr_fd(tgetstr("cd", NULL), 0);
+	if (history->location != 0 && history->head->prev)
+	{
+		history->head = history->head->prev;
+		history->location--;
+		ft_bzero(line->cmd, line->length);
+		ft_strcpy(line->cmd, history->head->line);
+	}
+	else
+	{
+		ft_bzero(line->cmd, CMD_MAX);
+	}
+	line->length = ft_strlen(line->cmd);
+	ft_putstr_fd(line->cmd, 0);
+	fl_update_cursor(line);
+}
+
+void			fl_input_loop(t_line *line, t_h_list *history)
 {
 	unsigned long		c;
 
@@ -75,10 +106,14 @@ void			fl_input_loop(t_line *line)
 	{
 		c = 0;
 		read(0, &c, 6);
-		if (c == LEFT && line->cursor != 0)
+		if (c == LEFT)
 			fl_move_left(line);
-		else if (c == RIGHT && line->cmd[line->cursor])
+		else if (c == RIGHT)
 			fl_move_right(line);
+		else if (c == UP)
+			fl_up_history(line, history);
+		else if (c == DOWN)
+			fl_down_history(line, history);
 		else if (ft_isprint(c))
 			fl_insert_char(line, c);
 		else if (IS_BACKSPACE(c))

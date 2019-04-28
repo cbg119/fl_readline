@@ -6,7 +6,7 @@
 /*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/17 16:07:08 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/04/25 12:46:08 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/04/27 15:39:34 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,15 @@
 
 void			fl_setup_term(t_line *line)
 {
-	ft_bzero(line->cmd, CMD_MAX);
-	ioctl(STDIN_FILENO, TIOCGWINSZ, &g_window);
-	line->window = &g_window;
 	tcgetattr(1, &line->terminals.old_terminal);
 	tcgetattr(1, &line->terminals.new_terminal);
 	line->terminals.new_terminal.c_lflag &= ~(ICANON | ECHO);
 	tcsetattr(1, TCSANOW, &line->terminals.new_terminal);
-	line->cursor_pos = &g_cursor;
 }
 
-void			fl_reset_term(t_terms *terminals)
+void			fl_reset_term(t_line *line)
 {
-	tcsetattr(1, TCSANOW, &terminals->old_terminal);
+	tcsetattr(1, TCSANOW, &line->terminals.old_terminal);
 }
 
 int				fl_term_check(void)

@@ -6,55 +6,55 @@
 /*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/17 16:30:19 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/04/23 11:30:31 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/04/27 17:03:45 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fl_readline.h"
 
-void		fl_get_cursorpos(void)
+t_cursor		fl_get_cursorpos(void)
 {
-	int		i;
-	char	pos[20];
+	int			i;
+	char		pos[20];
+	t_cursor	cursor;
 
 	ft_bzero(pos, 20);
 	ft_putstr_fd("\e[6n", 0);
 	i = read(0, pos, 20);
 	pos[i] = 0;
 	i = 2;
-	g_cursor.row = ft_atoi(pos + i);
+	cursor.row = ft_atoi(pos + i);
 	while (IS_DIGIT(pos[i]))
 		i++;
-	g_cursor.col = ft_atoi(pos + i + 1);
+	cursor.col = ft_atoi(pos + i + 1);
+	return (cursor);
 }
 
-void		fl_force_cursor_update(t_line *line)
+void			fl_update_cursor(t_line *line)
 {
-	ft_putstr(tgoto(tgetstr("cm", NULL), line->cursor_pos->col - 1,
-	line->cursor_pos->row - 1));
-}
+	int		x;
+	int		y;
 
-void		fl_move_left(t_line *line)
-{
-	if (line->cursor_pos->col > 1)
-		ft_putstr(tgetstr("le", NULL));
+	if (line->cursor_start.col + line->cursor == g_window.ws_col)
+		x = g_window.ws_col;
 	else
-		ft_putstr(tgoto(tgetstr("cm", NULL), line->window->ws_col - 1,
-		line->cursor_pos->row - 2));
-	fl_get_cursorpos();
+		x = (line->cursor_start.col + line->cursor) % g_window.ws_col;
+	y = line->cursor_start.row + ((line->cursor_start.col + line->cursor) / g_window.ws_col);
+	ft_putstr_fd(tgoto(tgetstr("cm", NULL), x - 1, y - 1), 0);
+}
+
+void			fl_move_left(t_line *line)
+{
+	if (line->cursor == 0)
+		return ;
 	line->cursor--;
+	fl_update_cursor(line);
 }
 
-void		fl_move_right(t_line *line)
+void			fl_move_right(t_line *line)
 {
-	if (line->cursor_pos->col + 1 > line->window->ws_col && line->cursor + 1
-	< line->length)
-	{
-		ft_putstr(tgetstr("do", NULL));
-		ft_putstr(tgetstr("cr", NULL));
-	}
-	else
-		ft_putstr(tgetstr("nd", NULL));
+	if (line->cursor == line->length)
+		return ;
 	line->cursor++;
-	fl_get_cursorpos();
+	fl_update_cursor(line);
 }

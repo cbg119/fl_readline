@@ -6,7 +6,7 @@
 /*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/17 13:54:47 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/04/25 12:59:23 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/04/27 17:40:06 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define FL_READLINE_H
 
 # include "libft.h"
+# include <signal.h>
 # include <termcap.h>
 # include <termios.h>
 # include <sys/ioctl.h>
@@ -27,6 +28,8 @@
 # define ESCAPE 0x1B
 # define LEFT 0x445B1B
 # define RIGHT 0x435B1B
+# define UP 4283163
+# define DOWN 4348699
 # define DELETE 0x7F
 # define DELETE2 0x7E335B1B
 # define CMD_MAX 4096
@@ -56,41 +59,57 @@ typedef struct			s_line
 	char				cmd[CMD_MAX];
 	t_terms				terminals;
 	t_cursor			cursor_start;
-	t_cursor			*cursor_pos;
 	struct winsize		*window;
 }						t_line;
+
+typedef struct			s_h_entry
+{
+	struct s_h_entry	*prev;
+	int					entry_num;
+	char				*line;
+	struct s_h_entry	*next;
+}						t_h_entry;
+
+typedef struct			s_h_list
+{
+	t_h_entry			*head;
+	int					location;
+	int					entries;
+}						t_h_list;
 
 /*
 **	GLOBAL
 */
 
-struct winsize			g_window;
-t_cursor				g_cursor;
+struct winsize	g_window;
 
-/*
-**	SIGNALS
-*/
-
-void					handle_resize(int signo);
+char			*fl_readline(char *str);
+void			fl_input_loop(t_line *line, t_h_list *history);
 
 /*
 **	CURSOR MOVEMENT
 */
 
-void					fl_input_loop(t_line *line);
-void					fl_move_left(t_line *line);
-void					fl_move_right(t_line *line);
-void					fl_get_cursorpos(void);
-void					fl_force_cursor_update(t_line *line);
+t_cursor		fl_get_cursorpos(void);
+void			fl_update_cursor(t_line *line);
+void			fl_move_left(t_line *line);
+void			fl_move_right(t_line *line);
 
 /*
-**	TERM SETUP
+**	TERMINAL STUFF
 */
 
-int						fl_term_check(void);
-void					fl_setup_term(t_line *line);
-void					fl_reset_term(t_terms *terminals);
+void			fl_setup_term(t_line *line);
+void			fl_reset_term(t_line *line);
+int				fl_term_check(void);
 
-char					*fl_readline(t_line *line, char *str);
+/*
+**	HISTORY
+*/
+
+void			fl_init_history(t_h_list *h_list);
+void			fl_add_history(char *line, t_h_list *h_list);
+
+void		handle_resize(int signo);
 
 #endif

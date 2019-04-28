@@ -6,7 +6,7 @@
 #    By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/17 13:41:11 by cbagdon           #+#    #+#              #
-#    Updated: 2019/04/21 11:02:39 by cbagdon          ###   ########.fr        #
+#    Updated: 2019/04/27 17:15:36 by cbagdon          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,10 +16,11 @@ SRC = main.c \
 		term.c \
 		input.c \
 		cursor_movement.c \
-		signals.c
+		signals.c \
+		history.c
 
 INCLUDES = includes/ \
-		-I ../libft/includes
+		-I../libft/includes
 
 LFT = -ltermcap
 
@@ -31,7 +32,7 @@ all: $(NAME)
 
 $(NAME):
 	@mkdir build
-	@gcc $(FLAGS) -I $(INCLUDES) -c $(addprefix src/,$(SRC))
+	@gcc $(FLAGS) -I$(INCLUDES) -c $(addprefix src/,$(SRC))
 	@mv $(OBJECTS) build/
 	@ar -rcs $(NAME) $(addprefix build/,$(OBJECTS))
 
