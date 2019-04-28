@@ -6,7 +6,7 @@
 /*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/17 13:54:47 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/04/27 17:40:06 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/04/28 00:19:39 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,10 @@
 # define DELETE 0x7F
 # define DELETE2 0x7E335B1B
 # define CMD_MAX 4096
+# define CTRL_LEFT 74995417045787
+# define CTRL_RIGHT 73895905418011
+# define HOME 4741915
+# define END 4610843
 # define IS_BACKSPACE(c) ((c == DELETE || c == DELETE2) ? 1 : 0)
 
 /*
@@ -72,7 +76,8 @@ typedef struct			s_h_entry
 
 typedef struct			s_h_list
 {
-	t_h_entry			*head;
+	t_h_entry			*history;
+	t_h_entry			*true_head;
 	int					location;
 	int					entries;
 }						t_h_list;
@@ -96,6 +101,15 @@ void			fl_move_left(t_line *line);
 void			fl_move_right(t_line *line);
 
 /*
+**	ADVANCED CURSOR MOVEMENT
+*/
+
+void			fl_move_word_left(t_line *line);
+void			fl_move_word_right(t_line *line);
+void			fl_move_beginning(t_line *line);
+void			fl_move_end(t_line *line);
+
+/*
 **	TERMINAL STUFF
 */
 
@@ -109,6 +123,8 @@ int				fl_term_check(void);
 
 void			fl_init_history(t_h_list *h_list);
 void			fl_add_history(char *line, t_h_list *h_list);
+void			fl_up_history(t_line *line, t_h_list *history);
+void			fl_down_history(t_line *line, t_h_list *history);
 
 void		handle_resize(int signo);
 

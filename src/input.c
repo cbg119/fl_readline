@@ -6,7 +6,7 @@
 /*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/17 16:32:11 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/04/27 20:22:22 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/04/28 00:23:17 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,54 +50,6 @@ static void		fl_insert_char(t_line *line, char c)
 	fl_update_cursor(line);
 }
 
-static void		fl_up_history(t_line *line, t_h_list *history)
-{
-	if (history->entries == 0 ||
-	(history->location > 0  && history->head->next == NULL))
-		return ;
-	line->cursor = 0;
-	fl_update_cursor(line);
-	ft_putstr_fd(tgetstr("cd", NULL), 0);
-	if (history->location == 0)
-	{
-		ft_bzero(line->cmd, line->length);
-		ft_strcpy(line->cmd, history->head->line);
-	}
-	else
-	{
-		ft_bzero(line->cmd, CMD_MAX);
-		history->head = history->head->next;
-		ft_strcpy(line->cmd, history->head->line);
-	}
-	history->location++;
-	line->length = ft_strlen(line->cmd);
-	ft_putstr_fd(line->cmd, 0);
-	fl_update_cursor(line);
-}
-
-static void		fl_down_history(t_line *line, t_h_list *history)
-{
-	if (history->entries == 0 || history->location == 0)
-		return ;
-	line->cursor = 0;
-	fl_update_cursor(line);
-	ft_putstr_fd(tgetstr("cd", NULL), 0);
-	if (history->location != 0 && history->head->prev)
-	{
-		history->head = history->head->prev;
-		history->location--;
-		ft_bzero(line->cmd, line->length);
-		ft_strcpy(line->cmd, history->head->line);
-	}
-	else
-	{
-		ft_bzero(line->cmd, CMD_MAX);
-	}
-	line->length = ft_strlen(line->cmd);
-	ft_putstr_fd(line->cmd, 0);
-	fl_update_cursor(line);
-}
-
 void			fl_input_loop(t_line *line, t_h_list *history)
 {
 	unsigned long		c;
@@ -118,9 +70,15 @@ void			fl_input_loop(t_line *line, t_h_list *history)
 			fl_insert_char(line, c);
 		else if (IS_BACKSPACE(c))
 			fl_delete_char(line);
+		else if (c == CTRL_LEFT)
+			fl_move_word_left(line);
+		else if (c == CTRL_RIGHT)
+			fl_move_word_right(line);
+		else if (c == HOME)
+			fl_move_beginning(line);
+		else if (c == END)
+			fl_move_end(line);
 		else if (c == ENTER)
-			break ;
-		else if (c == ESCAPE)
 			break ;
 	}
 }

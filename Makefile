@@ -6,7 +6,7 @@
 #    By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/17 13:41:11 by cbagdon           #+#    #+#              #
-#    Updated: 2019/04/27 17:15:36 by cbagdon          ###   ########.fr        #
+#    Updated: 2019/04/27 20:34:55 by cbagdon          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,8 @@ SRC = main.c \
 		input.c \
 		cursor_movement.c \
 		signals.c \
-		history.c
+		history.c \
+		advanced_input.c
 
 INCLUDES = includes/ \
 		-I../libft/includes
