@@ -4,9 +4,9 @@
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
+/*                           a                     +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/17 13:54:58 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/04/28 17:17:03 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/04/29 11:41:39 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,21 +21,16 @@ static void		fl_init_line(t_line *line, char *prompt)
 	ioctl(STDIN_FILENO, TIOCGWINSZ, &g_window);
 }
 
-char			*fl_readline(char *str)
+char			*fl_readline(t_h_list *history, char *str)
 {
-	static t_h_list		history;
 	t_line				line;
 
-	history.location = 0;
 	fl_init_line(&line, str);
-	ft_putstr_fd(tgetstr("ti", NULL), 0);
 	fl_setup_term(&line);
 	ft_putstr_fd(str, STDERR_FILENO);
 	line.cursor_start = fl_get_cursorpos();
-	fl_input_loop(&line, &history);
-	fl_add_history(line.cmd, &history);
-	history.history = history.true_head;
+	fl_input_loop(&line, history);
+	fl_add_history(line.cmd, history);
 	fl_reset_term(&line);
-	ft_putstr_fd(tgetstr("te", NULL), 0);
 	return (ft_strdup(line.cmd));
 }

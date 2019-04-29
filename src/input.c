@@ -6,7 +6,7 @@
 /*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/17 16:32:11 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/04/28 16:30:35 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/04/29 11:48:42 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,10 @@ void			fl_input_loop(t_line *line, t_h_list *history)
 		else if (c == END)
 			fl_move_end(line);
 		else if (c == ENTER)
+		{
+			history->location = 0;
+			history->history = history->true_head;
 			break ;
+		}
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/27 17:15:22 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/04/28 16:48:17 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/04/29 11:39:41 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,12 @@ void				fl_up_history(t_line *line, t_h_list *history)
 	if (history->location == 0)
 	{
 		ft_bzero(line->cmd, line->length);
-		ft_strcpy(line->cmd, history->history->line);
+		ft_strcpy(line->cmd, history->true_head->line);
 	}
 	else
 	{
-		ft_bzero(line->cmd, CMD_MAX);
 		history->history = history->history->next;
+		ft_bzero(line->cmd, CMD_MAX);
 		ft_strcpy(line->cmd, history->history->line);
 	}
 	history->location++;

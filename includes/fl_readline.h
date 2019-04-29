@@ -6,7 +6,7 @@
 /*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/17 13:54:47 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/04/28 17:16:31 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/04/29 11:15:46 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ typedef struct			s_h_list
 
 struct winsize			g_window;
 
-char					*fl_readline(char *str);
+char					*fl_readline(t_h_list *history, char *str);
 void					fl_input_loop(t_line *line, t_h_list *history);
 
 /*
