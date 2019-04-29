@@ -12,25 +12,30 @@
 
 #include "fl_readline.h"
 
+static void		fl_clear_screen(void)
+{
+	ft_putstr(tgetstr("cl", NULL));
+}
+
 static void		fl_init_line(t_line *line, char *prompt)
 {
 	ft_bzero(line->cmd, CMD_MAX);
 	line->length = 0;
 	line->cursor = 0;
+	line->prompt = prompt;
 	line->prompt_length = ft_strlen(prompt);
 	ioctl(STDIN_FILENO, TIOCGWINSZ, &g_window);
 }
 
 char			*fl_readline(t_h_list *history, char *str)
 {
-	t_line				line;
-
-	fl_init_line(&line, str);
-	fl_setup_term(&line);
+	fl_clear_screen();
+	fl_init_line(&g_line, str);
+	fl_setup_term(&g_line);
 	ft_putstr_fd(str, STDERR_FILENO);
-	line.cursor_start = fl_get_cursorpos();
-	fl_input_loop(&line, history);
-	fl_add_history(line.cmd, history);
-	fl_reset_term(&line);
-	return (ft_strdup(line.cmd));
+	g_line.cursor_start = fl_get_cursorpos();
+	fl_input_loop(&g_line, history);
+	fl_add_history(g_line.cmd, history);
+	fl_reset_term(&g_line);
+	return (ft_strdup(g_line.cmd));
 }

@@ -6,7 +6,7 @@
 /*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/17 13:54:47 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/04/29 11:15:46 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/04/29 12:14:52 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ typedef struct			s_line
 	int					cursor;
 	int					prompt_length;
 	char				cmd[CMD_MAX];
+	char				*prompt;
 	t_terms				terminals;
 	t_cursor			cursor_start;
 	struct winsize		*window;
@@ -87,6 +88,7 @@ typedef struct			s_h_list
 */
 
 struct winsize			g_window;
+t_line					g_line;
 
 char					*fl_readline(t_h_list *history, char *str);
 void					fl_input_loop(t_line *line, t_h_list *history);
