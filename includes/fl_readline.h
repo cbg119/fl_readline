@@ -6,7 +6,7 @@
 /*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/17 13:54:47 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/04/28 00:19:39 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/04/28 17:16:31 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,46 +86,46 @@ typedef struct			s_h_list
 **	GLOBAL
 */
 
-struct winsize	g_window;
+struct winsize			g_window;
 
-char			*fl_readline(char *str);
-void			fl_input_loop(t_line *line, t_h_list *history);
+char					*fl_readline(char *str);
+void					fl_input_loop(t_line *line, t_h_list *history);
 
 /*
 **	CURSOR MOVEMENT
 */
 
-t_cursor		fl_get_cursorpos(void);
-void			fl_update_cursor(t_line *line);
-void			fl_move_left(t_line *line);
-void			fl_move_right(t_line *line);
+t_cursor				fl_get_cursorpos(void);
+void					fl_update_cursor(t_line *line);
+void					fl_move_left(t_line *line);
+void					fl_move_right(t_line *line);
 
 /*
 **	ADVANCED CURSOR MOVEMENT
 */
 
-void			fl_move_word_left(t_line *line);
-void			fl_move_word_right(t_line *line);
-void			fl_move_beginning(t_line *line);
-void			fl_move_end(t_line *line);
+void					fl_move_word_left(t_line *line);
+void					fl_move_word_right(t_line *line);
+void					fl_move_beginning(t_line *line);
+void					fl_move_end(t_line *line);
 
 /*
 **	TERMINAL STUFF
 */
 
-void			fl_setup_term(t_line *line);
-void			fl_reset_term(t_line *line);
-int				fl_term_check(void);
+void					fl_setup_term(t_line *line);
+void					fl_reset_term(t_line *line);
+int						fl_term_check(void);
 
 /*
 **	HISTORY
 */
 
-void			fl_init_history(t_h_list *h_list);
-void			fl_add_history(char *line, t_h_list *h_list);
-void			fl_up_history(t_line *line, t_h_list *history);
-void			fl_down_history(t_line *line, t_h_list *history);
+void					fl_init_history(t_h_list *h_list);
+void					fl_add_history(char *line, t_h_list *h_list);
+void					fl_up_history(t_line *line, t_h_list *history);
+void					fl_down_history(t_line *line, t_h_list *history);
 
-void		handle_resize(int signo);
+void					handle_resize(int signo);
 
 #endif

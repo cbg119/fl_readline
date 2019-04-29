@@ -6,7 +6,7 @@
 /*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/17 16:32:11 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/04/28 00:23:17 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/04/28 16:30:35 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void			fl_input_loop(t_line *line, t_h_list *history)
 {
 	unsigned long		c;
 
+	signal(SIGWINCH, handle_resize);
 	while (1)
 	{
 		c = 0;

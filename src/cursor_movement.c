@@ -6,7 +6,7 @@
 /*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/17 16:30:19 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/04/28 01:07:38 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/04/28 17:06:48 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,20 @@ void			fl_update_cursor(t_line *line)
 	if (line->cursor_start.col + line->cursor == g_window.ws_col)
 		y = line->cursor_start.row;
 	else
-		y = line->cursor_start.row + ((line->cursor_start.col + line->cursor) / g_window.ws_col);
-	ft_putstr_fd(tgoto(tgetstr("cm", NULL), x, y), 0);
+		y = line->cursor_start.row + ((line->cursor_start.col + line->cursor) /
+		g_window.ws_col);
+	if (x == 0)
+	{
+		y--;
+		x = g_window.ws_col;
+	}
+	if (y > g_window.ws_row)
+	{
+		y--;
+		line->cursor_start.row--;
+		ft_putstr_fd(tgetstr("sf", NULL), 0);
+	}
+	ft_putstr_fd(tgoto(tgetstr("cm", NULL), x - 1, y - 1), 0);
 }
 
 void			fl_move_left(t_line *line)

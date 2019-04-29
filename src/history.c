@@ -6,7 +6,7 @@
 /*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/27 17:15:22 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/04/28 00:21:07 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/04/28 16:48:17 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,7 @@ void				fl_add_history(char *line, t_h_list *h_list)
 
 void				fl_up_history(t_line *line, t_h_list *history)
 {
-	if (history->entries == 0 ||
-	(history->location > 0  && history->history->next == NULL))
+	if (history->entries == 0 || history->location == history->entries)
 		return ;
 	line->cursor = 0;
 	fl_update_cursor(line);
@@ -77,17 +76,15 @@ void				fl_down_history(t_line *line, t_h_list *history)
 	line->cursor = 0;
 	fl_update_cursor(line);
 	ft_putstr_fd(tgetstr("cd", NULL), 0);
-	if (history->location != 0 && history->history->prev)
+	if (history->history->prev)
 	{
 		history->history = history->history->prev;
-		history->location--;
 		ft_bzero(line->cmd, line->length);
 		ft_strcpy(line->cmd, history->history->line);
 	}
 	else
-	{
 		ft_bzero(line->cmd, CMD_MAX);
-	}
+	history->location--;
 	line->length = ft_strlen(line->cmd);
 	ft_putstr_fd(line->cmd, 0);
 	fl_update_cursor(line);
