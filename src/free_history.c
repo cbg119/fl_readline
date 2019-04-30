@@ -1,30 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signals.c                                          :+:      :+:    :+:   */
+/*   free_history.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/21 11:01:29 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/04/30 10:44:29 by cbagdon          ###   ########.fr       */
+/*   Created: 2019/04/30 10:47:23 by cbagdon           #+#    #+#             */
+/*   Updated: 2019/04/30 10:54:17 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fl_readline.h"
 
-void		handle_resize(int signo)
+void	fl_free_history(t_h_list *history)
 {
-	int		saved_cursor;
-
-	(void)signo;
-	ioctl(STDIN_FILENO, TIOCGWINSZ, &g_line.window);
-	saved_cursor = g_line.cursor;
-	g_line.cursor = 0;
-	fl_update_cursor(&g_line);
-	ft_putstr_fd(tgetstr("cl", NULL), 0);
-	ft_putstr_fd(g_line.prompt, 0);
-	g_line.cursor_start = fl_get_cursorpos();
-	ft_putstr_fd(g_line.cmd, 0);
-	g_line.cursor = saved_cursor;
-	fl_update_cursor(&g_line);
+	if (!history || !history->entries)
+		return ;
+	while (history->true_head)
+	{
+		history->history = history->true_head;
+		history->true_head = history->true_head->next;
+		free(history->history->line);
+		free(history->history);
+	}
 }

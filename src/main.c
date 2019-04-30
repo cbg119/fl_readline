@@ -4,18 +4,13 @@
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
-/*                           a                     +#+#+#+#+#+   +#+           */
+/*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/17 13:54:58 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/04/29 11:41:39 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/04/30 12:36:45 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fl_readline.h"
-
-static void		fl_clear_screen(void)
-{
-	ft_putstr(tgetstr("cl", NULL));
-}
 
 static void		fl_init_line(t_line *line, char *prompt)
 {
@@ -24,12 +19,11 @@ static void		fl_init_line(t_line *line, char *prompt)
 	line->cursor = 0;
 	line->prompt = prompt;
 	line->prompt_length = ft_strlen(prompt);
-	ioctl(STDIN_FILENO, TIOCGWINSZ, &g_window);
+	ioctl(STDIN_FILENO, TIOCGWINSZ, &line->window);
 }
 
 char			*fl_readline(t_h_list *history, char *str)
 {
-	fl_clear_screen();
 	fl_init_line(&g_line, str);
 	fl_setup_term(&g_line);
 	ft_putstr_fd(str, STDERR_FILENO);

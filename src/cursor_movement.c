@@ -6,7 +6,7 @@
 /*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/17 16:30:19 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/04/28 17:06:48 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/04/30 10:43:01 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,21 +35,21 @@ void			fl_update_cursor(t_line *line)
 	int		x;
 	int		y;
 
-	if (line->cursor_start.col + line->cursor == g_window.ws_col)
-		x = g_window.ws_col;
+	if (line->cursor_start.col + line->cursor == line->window.ws_col)
+		x = line->window.ws_col;
 	else
-		x = (line->cursor_start.col + line->cursor) % g_window.ws_col;
-	if (line->cursor_start.col + line->cursor == g_window.ws_col)
+		x = (line->cursor_start.col + line->cursor) % line->window.ws_col;
+	if (line->cursor_start.col + line->cursor == line->window.ws_col)
 		y = line->cursor_start.row;
 	else
 		y = line->cursor_start.row + ((line->cursor_start.col + line->cursor) /
-		g_window.ws_col);
+		line->window.ws_col);
 	if (x == 0)
 	{
 		y--;
-		x = g_window.ws_col;
+		x = line->window.ws_col;
 	}
-	if (y > g_window.ws_row)
+	if (y > line->window.ws_row)
 	{
 		y--;
 		line->cursor_start.row--;

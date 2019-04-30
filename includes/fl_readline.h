@@ -6,9 +6,11 @@
 /*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/17 13:54:47 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/04/29 12:14:52 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/04/30 12:00:47 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+//put winsize in line struct, rename line str
 
 #ifndef FL_READLINE_H
 # define FL_READLINE_H
@@ -23,21 +25,35 @@
 **	KEYS
 */
 
-# define SPACE 0x20
-# define ENTER 0xA
-# define ESCAPE 0x1B
-# define LEFT 0x445B1B
-# define RIGHT 0x435B1B
-# define UP 4283163
-# define DOWN 4348699
-# define DELETE 0x7F
-# define DELETE2 0x7E335B1B
+# define K_SPACE			0x20
+# define K_ENTER			0xA
+# define K_ESCAPE			0x1B
+# define K_LEFT				0x445B1B
+# define K_RIGHT			0x435B1B
+# define K_UP				4283163
+# define K_DOWN				4348699
+# define K_DELETE			0x7F
+# define K_DELETE2			0x7E335B1B
+# define K_CTRL_LEFT		74995417045787
+# define K_CTRL_RIGHT		73895905418011
+# define K_HOME				4741915
+# define K_END				4610843
+# define K_OPTION_C			42947
+# define K_OPTION_V			10127586
+# define K_OPTION_X			8948194
+# define K_OPTION_SHIFT_C	34755
+# define K_OPTION_SHIFT_V	9082850
+# define K_OPTION_SHIFT_X	39883
+
+/*
+** MACROS
+*/
+
 # define CMD_MAX 4096
-# define CTRL_LEFT 74995417045787
-# define CTRL_RIGHT 73895905418011
-# define HOME 4741915
-# define END 4610843
-# define IS_BACKSPACE(c) ((c == DELETE || c == DELETE2) ? 1 : 0)
+# define IS_BACKSPACE(c) ((c == K_DELETE || c == K_DELETE2) ? 1 : 0)
+# define IS_COPY_KEY(c)	((c == K_OPTION_C || c == K_OPTION_SHIFT_C) ? 1 : 0)
+# define IS_PASTE_KEY(c) ((c == K_OPTION_V || c == K_OPTION_SHIFT_V) ? 1 : 0)
+# define IS_CUT_KEY(c) ((c == K_OPTION_X || c == K_OPTION_SHIFT_X) ? 1 : 0)
 
 /*
 **	STRUCTS
@@ -61,10 +77,11 @@ typedef struct			s_line
 	int					cursor;
 	int					prompt_length;
 	char				cmd[CMD_MAX];
+	char				clipboard[CMD_MAX];
 	char				*prompt;
 	t_terms				terminals;
 	t_cursor			cursor_start;
-	struct winsize		*window;
+	struct winsize		window;
 }						t_line;
 
 typedef struct			s_h_entry
@@ -87,7 +104,6 @@ typedef struct			s_h_list
 **	GLOBAL
 */
 
-struct winsize			g_window;
 t_line					g_line;
 
 char					*fl_readline(t_h_list *history, char *str);
@@ -112,6 +128,22 @@ void					fl_move_beginning(t_line *line);
 void					fl_move_end(t_line *line);
 
 /*
+**	CLIPBOARD ACTIONS
+*/
+
+void					fl_send_to_clipboard(t_line *line, char *text);
+void					fl_copy(t_line *line, unsigned long key);
+void					fl_paste(t_line *line, unsigned long key);
+void					fl_cut(t_line *line, unsigned long key);
+
+/*
+**	KEY INPUT
+*/
+
+void					fl_delete_char(t_line *line);
+void					fl_insert_char(t_line *line, char c);
+
+/*
 **	TERMINAL STUFF
 */
 
@@ -123,10 +155,11 @@ int						fl_term_check(void);
 **	HISTORY
 */
 
-void					fl_init_history(t_h_list *h_list);
+void					fl_init_history(t_h_list *history);
 void					fl_add_history(char *line, t_h_list *h_list);
 void					fl_up_history(t_line *line, t_h_list *history);
 void					fl_down_history(t_line *line, t_h_list *history);
+void					fl_free_history(t_h_list *history);
 
 void					handle_resize(int signo);
 

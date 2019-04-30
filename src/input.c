@@ -6,26 +6,13 @@
 /*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/17 16:32:11 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/04/29 11:48:42 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/04/30 12:37:09 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fl_readline.h"
 
-/*
-**	The insert char function is ugly. I'm sorry. I've been stuck on this for
-**	days and just figured out this ugly but also working solution. papa bless.
-*/
-
-/*
-**	For clarity, the first if condition in fl_insert_char checks for when the
-**	user is editing the end of the line if the cursor has hit the end of the
-**	window yet. The second checks for when the user is editing before the
-**	end of the line, and it is checking to see if the end of the line has hit
-**	the window yet
-*/
-
-static void		fl_delete_char(t_line *line)
+void			fl_delete_char(t_line *line)
 {
 	if (line->cursor == 0)
 		return ;
@@ -38,8 +25,10 @@ static void		fl_delete_char(t_line *line)
 	fl_update_cursor(line);
 }
 
-static void		fl_insert_char(t_line *line, char c)
+void			fl_insert_char(t_line *line, char c)
 {
+	if (line->length + 1 >= CMD_MAX)
+		return ;
 	ft_memmove(line->cmd + line->cursor + 1, line->cmd + line->cursor,
 	CMD_MAX - line->cursor - 1);
 	line->cmd[line->cursor] = c;
@@ -50,6 +39,7 @@ static void		fl_insert_char(t_line *line, char c)
 	fl_update_cursor(line);
 }
 
+//lul implement a dispatch array for this ugly thing
 void			fl_input_loop(t_line *line, t_h_list *history)
 {
 	unsigned long		c;
@@ -59,27 +49,33 @@ void			fl_input_loop(t_line *line, t_h_list *history)
 	{
 		c = 0;
 		read(0, &c, 6);
-		if (c == LEFT)
+		if (c == K_LEFT)
 			fl_move_left(line);
-		else if (c == RIGHT)
+		else if (c == K_RIGHT)
 			fl_move_right(line);
-		else if (c == UP)
+		else if (c == K_UP)
 			fl_up_history(line, history);
-		else if (c == DOWN)
+		else if (c == K_DOWN)
 			fl_down_history(line, history);
 		else if (ft_isprint(c))
 			fl_insert_char(line, c);
 		else if (IS_BACKSPACE(c))
 			fl_delete_char(line);
-		else if (c == CTRL_LEFT)
+		else if (c == K_CTRL_LEFT)
 			fl_move_word_left(line);
-		else if (c == CTRL_RIGHT)
+		else if (c == K_CTRL_RIGHT)
 			fl_move_word_right(line);
-		else if (c == HOME)
+		else if (c == K_HOME)
 			fl_move_beginning(line);
-		else if (c == END)
+		else if (c == K_END)
 			fl_move_end(line);
-		else if (c == ENTER)
+		else if (IS_COPY_KEY(c))
+			fl_copy(line, c);
+		else if (IS_PASTE_KEY(c))
+			fl_paste(line, c);
+		else if (IS_CUT_KEY(c))
+			fl_cut(line, c);
+		else if (c == K_ENTER)
 		{
 			history->location = 0;
 			history->history = history->true_head;

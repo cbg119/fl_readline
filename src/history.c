@@ -6,7 +6,7 @@
 /*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/27 17:15:22 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/04/29 11:39:41 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/04/29 15:38:14 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,13 @@ static t_h_entry	*fl_new_history(char *line)
 	entry->line = ft_strdup(line);
 	entry->next = NULL;
 	return (entry);
+}
+
+void				fl_init_history(t_h_list *history)
+{
+	history->entries = 0;
+	history->history = NULL;
+	history->true_head = NULL;
 }
 
 void				fl_add_history(char *line, t_h_list *h_list)
