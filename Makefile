@@ -6,7 +6,7 @@
 #    By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/17 13:41:11 by cbagdon           #+#    #+#              #
-#    Updated: 2019/05/10 15:15:30 by cbagdon          ###   ########.fr        #
+#    Updated: 2019/05/10 16:30:24 by cbagdon          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,9 @@ SRC = main.c \
 		advanced_input.c \
 		free_history.c \
 		clipboard.c \
-		vertical_input.c
+		vertical_input.c \
+		dispatch.c \
+		dispatch_setup.c
 
 INCLUDES = includes/ \
 		-I../libft/includes

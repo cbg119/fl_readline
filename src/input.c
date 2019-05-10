@@ -6,7 +6,7 @@
 /*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/17 16:32:11 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/05/10 15:22:43 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/05/10 16:53:24 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ void			fl_insert_char(t_line *line, char c)
 	fl_update_cursor(line);
 }
 
-//lul implement a dispatch array for this ugly thing
 void			fl_input_loop(t_line *line, t_h_list *history)
 {
 	unsigned long		c;
@@ -49,36 +48,11 @@ void			fl_input_loop(t_line *line, t_h_list *history)
 	{
 		c = 0;
 		read(0, &c, 6);
-		if (c == K_LEFT)
-			fl_move_left(line);
-		else if (c == K_RIGHT)
-			fl_move_right(line);
-		else if (c == K_UP)
-			fl_up_history(line, history);
-		else if (c == K_DOWN)
-			fl_down_history(line, history);
+		if (fl_match_line_key(c, line) || fl_match_line_c_key(c, line) ||
+		fl_match_history_key(c, line, history))
+			continue ;
 		else if (ft_isprint(c))
 			fl_insert_char(line, c);
-		else if (IS_BACKSPACE(c))
-			fl_delete_char(line);
-		else if (c == K_CTRL_LEFT)
-			fl_move_word_left(line);
-		else if (c == K_CTRL_RIGHT)
-			fl_move_word_right(line);
-		else if (c == K_CTRL_UP)
-			fl_move_up(line);
-		else if (c == K_CTRL_DOWN)
-			fl_move_down(line);
-		else if (c == K_HOME)
-			fl_move_beginning(line);
-		else if (c == K_END)
-			fl_move_end(line);
-		else if (IS_COPY_KEY(c))
-			fl_copy(line, c);
-		else if (IS_PASTE_KEY(c))
-			fl_paste(line, c);
-		else if (IS_CUT_KEY(c))
-			fl_cut(line, c);
 		else if (c == K_ENTER)
 		{
 			history->location = 0;
