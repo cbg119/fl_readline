@@ -6,7 +6,7 @@
 /*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/17 16:32:11 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/04/30 12:37:09 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/05/10 15:22:43 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,10 @@ void			fl_input_loop(t_line *line, t_h_list *history)
 			fl_move_word_left(line);
 		else if (c == K_CTRL_RIGHT)
 			fl_move_word_right(line);
+		else if (c == K_CTRL_UP)
+			fl_move_up(line);
+		else if (c == K_CTRL_DOWN)
+			fl_move_down(line);
 		else if (c == K_HOME)
 			fl_move_beginning(line);
 		else if (c == K_END)
@@ -79,6 +83,8 @@ void			fl_input_loop(t_line *line, t_h_list *history)
 		{
 			history->location = 0;
 			history->history = history->true_head;
+			line->cursor = line->length;
+			fl_update_cursor(line);
 			break ;
 		}
 	}

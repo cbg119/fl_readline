@@ -6,7 +6,7 @@
 /*   By: cbagdon <cbagdon@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/17 13:54:47 by cbagdon           #+#    #+#             */
-/*   Updated: 2019/04/30 12:00:47 by cbagdon          ###   ########.fr       */
+/*   Updated: 2019/05/10 15:21:32 by cbagdon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@
 # define K_DELETE2			0x7E335B1B
 # define K_CTRL_LEFT		74995417045787
 # define K_CTRL_RIGHT		73895905418011
+# define K_CTRL_UP			71696882162459
+# define K_CTRL_DOWN		72796393790235
 # define K_HOME				4741915
 # define K_END				4610843
 # define K_OPTION_C			42947
@@ -126,6 +128,8 @@ void					fl_move_word_left(t_line *line);
 void					fl_move_word_right(t_line *line);
 void					fl_move_beginning(t_line *line);
 void					fl_move_end(t_line *line);
+void					fl_move_up(t_line *line);
+void					fl_move_down(t_line *line);
 
 /*
 **	CLIPBOARD ACTIONS

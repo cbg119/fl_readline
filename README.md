@@ -26,6 +26,7 @@ and among other things as well.
 * `LEFT` and `RIGHT` - Moves cursor
 * `UP` and `DOWN` - Navigate through history
 * `CTRL + LEFT` and `CTRL + RIGHT` - Move to previous/next word
+* `CTRL + UP` and `CTRL + DOWN` - Move up/down the line
 * `HOME` and `END` - Move to beginning/end of line
 * `CTRL + c` and `CTRL + SHIFT + x` - Cut line starting before/after cursor
 * `CTRL + c` and `CTRL + SHIFT + c` - Copy line starting before/after cursor
